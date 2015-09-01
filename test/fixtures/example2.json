@@ -1,0 +1,57 @@
+{
+    "cpcExampleURL": "http://www.uspto.gov/web/patents/classification/cpc-A.html",
+    "cpcSections": [
+    {
+        "cpcSectionNumber": "A",
+        "cpcSectionName":   "HUMAN NECESSITIES",
+        "cpcSubSections": [
+        {
+            "cpcSubSectionName": "Agriculture",
+            "cpcClasses": [
+            {
+                "cpcClassNumber":   "A01",
+                "cpcClassName":     "AGRICULTURE; FORESTRY; ANIMAL HUSBANDRY; HUNTING; TRAPPING; FISHING",
+                "cpcSubClasses": [
+                {
+                    "cpcSubClassNumber": "A01B",
+                    "cpcSubClassName": "SOIL WORKING IN AGRICULTURE OR FORESTRY; PARTS, DETAILS, OR ACCESSORIES OF AGRICULTURAL MACHINES OR IMPLEMENTS, IN GENERAL",
+                    "cpcGroups": [
+                    {
+                        "cpcGroupNumber": "1/00",
+                        "cpcGroupName": "Hand tools",
+                        "cpcSubGroups": [
+                        "1/02",
+                        "1/022",
+                        "1/024",
+                        "1/026",
+                        "1/028",
+                        "1/04",
+                        "1/06",
+                        "1/065",
+                        "1/08",
+                        "1/10",
+                        "1/12",
+                        "1/14",
+                        "1/16",
+                        "1/165",
+                        "1/18",
+                        "1/20",
+                        "1/22",
+                        "1/222",
+                        "1/225",
+                        "1/227",
+                        "1/24",
+                        "1/243",
+                        "1/246"
+                        ]
+                    }
+                    ]
+                }
+                ]
+            }
+            ]
+        }
+        ]
+    }
+    ]
+}

@@ -1,0 +1,49 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    addressable (2.3.8)
+    celluloid (0.16.0)
+      timers (~> 4.0.0)
+    crack (0.4.2)
+      safe_yaml (~> 1.0.0)
+    ffi (1.9.10)
+    hitimes (1.2.2)
+    listen (2.10.1)
+      celluloid (~> 0.16.0)
+      rb-fsevent (>= 0.9.3)
+      rb-inotify (>= 0.9)
+    mini_portile (0.6.2)
+    minispec-metadata (2.0.0)
+      minitest
+    minitest (5.8.0)
+    minitest-vcr (1.3.0)
+      minispec-metadata (~> 2.0)
+      minitest (>= 4.7.5)
+      vcr (~> 2.9)
+    nokogiri (1.6.6.2)
+      mini_portile (~> 0.6.0)
+    rb-fsevent (0.9.5)
+    rb-inotify (0.9.5)
+      ffi (>= 0.5.0)
+    rerun (0.10.0)
+      listen (~> 2.7, >= 2.7.3)
+    safe_yaml (1.0.4)
+    timers (4.0.4)
+      hitimes
+    vcr (2.9.3)
+    webmock (1.21.0)
+      addressable (>= 2.3.6)
+      crack (>= 0.3.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  minitest-vcr
+  nokogiri
+  rerun
+  vcr
+  webmock
+
+BUNDLED WITH
+   1.10.5
