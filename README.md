@@ -1,0 +1,2 @@
+# cpc_json
+Converts CPC XML to JSON. The Cooperative Patent Classification (CPC) is a patent classification system, which has been jointly developed by the European Patent Office (EPO) and the United States Patent and Trademark Office (USPTO).[1] The CPC is substantially based on the previous European classification system (ECLA), which itself was a more specific and detailed version of the International Patent Classification (IPC) system. The CPC XML files are available in bulk from http://www.cooperativepatentclassification.org/cpcSchemeAndDefinitions/Bulk.html
