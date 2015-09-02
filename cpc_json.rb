@@ -75,17 +75,21 @@ class CpcJson
   def parse_level5(item)
     symbol = find_symbol item
     title = build_title(item)
+
+    puts "LEVEL5 DEBUG: link-file: #{item['link-file']}"
+
     {
-      'cpcSubClassNumber' => 'A01B',
+      'cpcSubClassNumber' => symbol.text,
       'cpcSubClassName'   => title,
       'cpcGroups'         => []
     }
   end
 
-  def build_title(item, max_parts=nil)
+  def build_title(item)
     node = find_title item
-    parts = max_parts.nil? ? node.elements : node.elements[0, max_parts]
-    title_strings = parts.collect(&:text)
+    title_strings = node.elements.collect {|title_part|
+      title_part.elements.find {|child| child.name == 'text'}.text.strip
+    }
     title_strings.join('; ')
   end
 
