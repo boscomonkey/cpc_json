@@ -4,7 +4,7 @@ require 'nokogiri'
 
 class CpcJson
 
-  def test_filter(elt)	# recursively collect hashes of names to children
+  def self.filter(elt)	# recursively collect hashes of names to children
     if elt.elements.size < 2
       { elt.name => elt.text }
     else
@@ -12,7 +12,7 @@ class CpcJson
     end
   end
 
-  def validate(xsd_fname, xml_fname)
+  def self.validate(xsd_fname, xml_fname)
     xsd = Nokogiri::XML::Schema(File.read(xsd_fname))
     doc = Nokogiri::XML(File.read(xml_fname))
 
@@ -21,8 +21,12 @@ class CpcJson
     end
   end
 
-  def parse(xml_fname)
-    doc = Nokogiri::XML(File.read(xml_fname))
+  def initialize(xml_fname)
+    @xml_fname = xml_fname
+  end
+
+  def parse
+    doc = Nokogiri::XML(File.read(@xml_fname))
     root = doc.root
     item = root.elements.first
     parse_level2 item
@@ -75,13 +79,48 @@ class CpcJson
   def parse_level5(item)
     symbol = find_symbol item
     title = build_title(item)
-
-    puts "LEVEL5 DEBUG: link-file: #{item['link-file']}"
+    link_file = item['link-file']
 
     {
       'cpcSubClassNumber' => symbol.text,
       'cpcSubClassName'   => title,
-      'cpcGroups'         => []
+      'cpcGroups'         => parse_link_file(link_file)
+    }
+  end
+
+  def parse_link_file(link_file)
+    fname = File.join File.dirname(@xml_fname), link_file
+    doc = Nokogiri::XML(File.read(fname))
+    root = doc.root
+    item = root.elements.first
+    prefix = find_symbol item
+
+    # ignore 6 and jump to 7 - which introduces a group
+    # levels 8 & 9 are the subgroups
+    groups = []
+    level6_items = select_items item
+    level6_items.each {|six|
+      sevens = select_items six
+      sevens.each {|seven|
+        groups << parse_level7(prefix, seven)
+      }
+    }
+    groups
+  end
+
+  def parse_level7(prefix, item)
+    symbol = find_symbol item
+    title = build_title item
+
+    flattened = item.search 'classification-item'
+    stripped = flattened.collect {|child|
+      child['sort-key'].sub(prefix, '')
+    }
+
+    {
+      'cpcGroupNumber' => symbol.text.sub(prefix, ''),
+      'cpcGroupName'   => title,
+      'cpcSubGroups'   => stripped
     }
   end
 
@@ -119,8 +158,8 @@ if __FILE__ == $0
   class Test < Minitest::Test
 
     def test_parse
-      cpc = CpcJson.new
-      obj = cpc.parse 'test/fixtures/cpc-scheme-A.xml'
+      cpc = CpcJson.new 'data/cpc-scheme-A.xml'
+      obj = cpc.parse
 
       assert_instance_of Hash, obj
       assert_instance_of Array, obj['cpcSections']
@@ -155,9 +194,36 @@ if __FILE__ == $0
 
       groups = subclass0['cpcGroups']
       assert_instance_of Array, groups
-      assert_equal 5, groups.size, 'NUMBER OF LEVEL 6 GROUPS IN cpc-scheme-A01B.xml'
+      assert_equal 37, groups.size, 'NUMBER OF LEVEL 7 GROUPS IN cpc-scheme-A01B.xml'
 
       group0 = groups.first
+      assert_equal '1/00', group0['cpcGroupNumber']
+      assert_equal 'Hand tools', group0['cpcGroupName']
+      assert_equal([
+                     "1/02",
+                     "1/022",
+                     "1/024",
+                     "1/026",
+                     "1/028",
+                     "1/04",
+                     "1/06",
+                     "1/065",
+                     "1/08",
+                     "1/10",
+                     "1/12",
+                     "1/14",
+                     "1/16",
+                     "1/165",
+                     "1/18",
+                     "1/20",
+                     "1/22",
+                     "1/222",
+                     "1/225",
+                     "1/227",
+                     "1/24",
+                     "1/243",
+                     "1/246"
+                   ], group0['cpcSubGroups'])
     end
 
   end
